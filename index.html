@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARC Raiders Stash Efficiency</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="top wrap">
+    <h1>ARC Raiders <span>Stash Efficiency</span></h1>
+    <p class="lede">
+      For every item: how much stash space you end up with compared with what you started with, when you
+      <b>craft</b> it from its ingredients or <b>recycle</b> it into materials.
+      <b>Below 1</b> means you free space, <b>above 1</b> means you use more. Lower is better.
+    </p>
+    <div class="formula">
+      crafting = <b>output qty ÷ item stack</b> &nbsp;÷&nbsp; <b>Σ (ingredient qty ÷ ingredient stack)</b>
+      &nbsp;·&nbsp; Bandage: (1 ÷ 5) ÷ (5 Fabric ÷ 50) = <b>2.00</b><br>
+      recycling = <b>Σ (material qty ÷ material stack)</b> &nbsp;÷&nbsp; <b>1 ÷ item stack</b>
+      &nbsp;·&nbsp; Bandage: (2 Fabric ÷ 50) ÷ (1 ÷ 5) = <b>0.20</b>
+    </div>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <section class="controls" id="controls">
+    <div class="wrap">
+      <div class="bar">
+        <button type="button" class="reset" id="reset" title="Clear the search, checkboxes, station and categories" disabled>&times; Clear all filters</button>
+        <span class="searchbox">
+          <input class="search" id="q" type="search" placeholder="Search items, types, ingredients…  ( / )" autocomplete="off" spellcheck="false" aria-label="Search items">
+          <button type="button" class="clear" id="qclear" title="Clear search (Esc)" aria-label="Clear search" hidden>&times;</button>
+        </span>
+        <div class="seg" role="group" aria-label="Compare the item against">
+          <button type="button" data-mode="direct" class="on" title="Compare with the ingredients of its recipe (the standard definition)">vs. ingredients</button>
+          <button type="button" data-mode="raw" title="Break every craftable ingredient down to its own ingredients, all the way to items that cannot be crafted">vs. base materials</button>
+        </div>
+        <label class="check"><input type="checkbox" id="craftable"> Craftable only</label>
+        <label class="check"><input type="checkbox" id="recyclable"> Recyclable only</label>
+        <label class="check"><input type="checkbox" id="disputed"> Disputed only</label>
+        <label class="check"><input type="checkbox" id="phased"> Show phased-out</label>
+      </div>
+      <div class="stations" id="stations" role="group" aria-label="Crafting station"></div>
+      <div class="cats" id="cats" role="group" aria-label="Categories"></div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="count">
+      <span id="count"></span>
+      <span class="legend">
+        <span><i style="background:var(--good)"></i>frees space</span>
+        <span><i style="background:var(--bad)"></i>uses more space</span>
+        <span><i style="background:var(--warn)"></i>sources disagree</span>
+      </span>
+    </div>
+    <table class="items" id="tbl">
+      <thead>
+        <tr>
+          <th class="c-icon" scope="col" aria-label="Icon"></th>
+          <th class="c-name" scope="col"><button type="button" data-sort="name">Item</button></th>
+          <th class="c-stack" scope="col"><button type="button" data-sort="stack">Stack</button></th>
+          <th class="c-recipe" scope="col">Recipe · ♻ recycles into</th>
+          <th class="c-eff" scope="col"><button type="button" data-sort="eff" title="Crafting efficiency: space of the crafted item ÷ space of its ingredients">Crafting</button></th>
+          <th class="c-rec" scope="col"><button type="button" data-sort="rec" title="Recycling efficiency: space of the recycled materials ÷ space of the item">Recycling</button></th>
+          <th class="c-src" scope="col"><button type="button" data-sort="src" title="AT = ArcTracker, MF = MetaForge, WK = ARC Raiders Wiki, DB = ARDB">Sources</button></th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr><td colspan="7" class="empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <footer class="wrap" id="footer"></footer>
+
+  <script src="data/items.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
